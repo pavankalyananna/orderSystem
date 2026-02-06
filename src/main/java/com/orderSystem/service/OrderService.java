@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import com.orderSystem.dto.OrderRequest;
@@ -11,10 +13,12 @@ import com.orderSystem.entity.Order;
 import com.orderSystem.entity.OrderItem;
 import com.orderSystem.entity.Product;
 import com.orderSystem.entity.User;
+import com.orderSystem.exception.BusinessException;
 import com.orderSystem.repository.OrderRepository;
 import com.orderSystem.repository.ProductRepository;
 import com.orderSystem.repository.UserRepository;
 
+import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -34,6 +38,10 @@ public class OrderService {
     }
 
     // IMPORTANT: Transaction
+    @Retryable(
+    		  value = OptimisticLockException.class,
+    		  maxAttempts = 3
+    		)
     @Transactional
     public Order placeOrder(OrderRequest request) {
 
@@ -87,5 +95,14 @@ public class OrderService {
     public List<Order> getUserOrders(Long userId) {
         return orderRepo.findByUserId(userId);
     }
+    @Recover
+    public Order recover(OptimisticLockException ex,
+                         OrderRequest request) {
+
+        throw new BusinessException(
+            "High traffic. Please try again."
+        );
+    }
+
 }
 
