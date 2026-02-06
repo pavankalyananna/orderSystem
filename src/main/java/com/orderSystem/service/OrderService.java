@@ -37,7 +37,6 @@ public class OrderService {
         this.orderRepo = orderRepo;
     }
 
-    // IMPORTANT: Transaction
     @Retryable(
     		  value = OptimisticLockException.class,
     		  maxAttempts = 3
@@ -45,7 +44,6 @@ public class OrderService {
     @Transactional
     public Order placeOrder(OrderRequest request) {
 
-        // 1. Get user
         User user = userRepo.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -57,23 +55,19 @@ public class OrderService {
 
         double total = 0;
 
-        // 2. Process each product
         for (OrderRequest.Item itemReq : request.getItems()) {
 
             Product product = productRepo.findById(itemReq.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
 
-            // 3. Check stock
             if (product.getQuantity() < itemReq.getQuantity()) {
                 throw new RuntimeException("Out of stock");
             }
 
-            // 4. Reduce stock
             product.setQuantity(
                 product.getQuantity() - itemReq.getQuantity()
             );
 
-            // 5. Create order item
             OrderItem item = new OrderItem();
             item.setOrder(order);
             item.setProduct(product);
@@ -88,7 +82,6 @@ public class OrderService {
         order.setItems(items);
         order.setTotalAmount(total);
 
-        // 6. Save (CASCADE saves items)
         return orderRepo.save(order);
     }
 

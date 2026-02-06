@@ -24,7 +24,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Indexed → fast login/search
     @Column(nullable = false, unique = true)
     @Email(message = "Invalid email")
     @NotBlank(message = "Email required")
