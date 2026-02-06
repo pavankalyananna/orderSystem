@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.orderSystem.dto.ApiResponse;
 
+import jakarta.persistence.OptimisticLockException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -52,6 +54,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(errors));
     }
+    @ExceptionHandler(OptimisticLockException.class)
+    public ResponseEntity<ApiResponse<Object>> handleOptimistic(
+            OptimisticLockException ex) {
+
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(ApiResponse.error(
+                "Product was updated by another user. Please retry."
+            ));
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleAll(Exception ex) {
