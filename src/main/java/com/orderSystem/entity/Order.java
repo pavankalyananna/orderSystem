@@ -14,8 +14,6 @@ import java.util.List;
         @Index(name = "idx_order_date", columnList = "createdAt")
     }
 )
-@Getter
-@Setter
 public class Order {
 
     @Id
