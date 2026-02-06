@@ -1,7 +1,14 @@
 package com.orderSystem.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(
@@ -10,10 +17,7 @@ import lombok.*;
         @Index(name = "idx_user_email", columnList = "email", unique = true)
     }
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class User {
 
     @Id
@@ -22,8 +26,10 @@ public class User {
 
     // Indexed → fast login/search
     @Column(nullable = false, unique = true)
+    @Email(message = "Invalid email")
+    @NotBlank(message = "Email required")
     private String email;
-
+    @NotBlank(message = "Name is required")
     private String name;
 
 	public Long getId() {
@@ -48,6 +54,18 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public User(Long id, @Email(message = "Invalid email") @NotBlank(message = "Email required") String email,
+			@NotBlank(message = "Name is required") String name) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.name = name;
+	}
+
+	public User() {
+		super();
 	}
     
 }

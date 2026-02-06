@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
-
 
 import com.orderSystem.entity.User;
+import com.orderSystem.exception.BadRequestException;
 import com.orderSystem.repository.UserRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -29,7 +30,7 @@ public class UserController {
 
         userRepo.findByEmail(user.getEmail())
                 .ifPresent(u -> {
-                    throw new RuntimeException("Email already exists");
+                    throw new BadRequestException("Email already exists");
                 });
 
         return userRepo.save(user);

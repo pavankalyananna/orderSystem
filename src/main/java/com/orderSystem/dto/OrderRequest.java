@@ -1,15 +1,19 @@
 package com.orderSystem.dto;
 
-import lombok.*;
-
 import java.util.List;
 
-@Getter
-@Setter
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
 public class OrderRequest {
 
-	private Long userId;
+    @NotNull
 
+	private Long userId;
+    @NotEmpty
 	private List<Item> items;
 
 	public Long getUserId() {
@@ -28,10 +32,10 @@ public class OrderRequest {
 		this.items = items;
 	}
 
-	@Getter
-	@Setter
 	public static class Item {
+		 @NotNull
 		private Long productId;
+		  @Min(1)
 		private Integer quantity;
 		public Long getProductId() {
 			return productId;

@@ -1,7 +1,17 @@
 package com.orderSystem.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(
@@ -10,19 +20,21 @@ import lombok.*;
         @Index(name = "idx_product_name", columnList = "name")
     }
 )
-@Getter
-@Setter
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Name required")
 
     private String name;
 
+    @NotNull
+    @Positive(message = "Price must be positive")
     private Double price;
 
-    // Stock count
+    @NotNull
+    @Min(value = 0, message = "Quantity >= 0")
     private Integer quantity;
 
 	public Long getId() {

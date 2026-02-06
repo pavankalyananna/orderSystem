@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.orderSystem.entity.Product;
 import com.orderSystem.repository.ProductRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -25,7 +27,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@Valid @RequestBody Product product) {
 
         validateProduct(product);
 
