@@ -11,12 +11,12 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Many items → One order
+    // Many items - One order
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    // Many items → One product
+    // Many items - One product
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

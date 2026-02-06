@@ -50,7 +50,6 @@ public class ApiResponse<T> {
 	}
 
 	public <T> ApiResponse() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public ApiResponse(boolean success, String message, T data, LocalDateTime timestamp) {
@@ -61,9 +60,6 @@ public class ApiResponse<T> {
 		this.timestamp = timestamp;
 	}
 
-	// -----------------------------
-    // SUCCESS RESPONSE
-    // -----------------------------
     public static <T> ApiResponse<T> success(String msg, T data) {
 
         return new ApiResponse<T>(  
@@ -74,9 +70,6 @@ public class ApiResponse<T> {
         );
     }
 
-    // -----------------------------
-    // ERROR RESPONSE
-    // -----------------------------
     public static <T> ApiResponse<T> error(String msg) {
 
         return new ApiResponse<T>( 

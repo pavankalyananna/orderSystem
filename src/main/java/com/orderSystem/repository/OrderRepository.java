@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.orderSystem.entity.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-// Indexed column → fast
+// Indexed column - fast
 List<Order> findByUserId(Long userId);
 }

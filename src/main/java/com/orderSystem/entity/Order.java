@@ -20,7 +20,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Many orders → One user
+    // Many orders - One user
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -29,7 +29,7 @@ public class Order {
 
     private LocalDateTime createdAt;
 
-    // One order → Many items
+    // One order - Many items
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
